@@ -128,6 +128,14 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
+            {/* User Profile Section - Shows when logged in */}
+            {session && (
+              <div className="px-4 py-3 border-b border-blue-400 bg-blue-700">
+                <p className="text-white font-semibold text-sm">👤 {session.user.name}</p>
+                <p className="text-blue-100 text-xs">{session.user.role === 'seller' ? '🏪 Seller' : '🛍️ Buyer'}</p>
+              </div>
+            )}
+
             {/* Mobile Search Bar */}
             {session?.user?.role === 'buyer' && (
               <div className="px-4 py-3 border-b border-blue-500">
