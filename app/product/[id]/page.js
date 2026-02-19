@@ -371,22 +371,55 @@ export default function ProductPage() {
             {/* QUANTITY AND ACTION BUTTONS SECTION */}
             <div className="space-y-4">
               {/* QUANTITY SELECTOR - Allows user to choose how many to buy (1-10) */}
-              <div className="flex items-center gap-3">
+              <div className="flex flex-col gap-2">
                 <label className="font-semibold text-gray-700">Quantity:</label>
-                {/* NUMBER INPUT FIELD - Only allows integers 1-10 */}
-                <input
-                  type="number"
-                  value={quantity}
-                  onChange={(e) => {
-                    // Parse input value to integer, default to 1 if invalid
-                    const val = parseInt(e.target.value) || 1;
-                    // Limit quantity: minimum 1, maximum 10
-                    setQuantity(Math.min(10, Math.max(1, val)));
-                  }}
-                  min="1" // Minimum allowed value
-                  max="10" // Maximum allowed value
-                  className="w-24 px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 bg-white text-black font-bold text-lg text-center"
-                />
+                {/* QUANTITY CONTROLS - Mobile Optimized with +/- buttons and input field */}
+                <div className="flex items-center gap-2 bg-gray-50 rounded-lg p-2 border-2 border-gray-300 focus-within:border-blue-600">
+                  {/* MINUS BUTTON - Decrease quantity */}
+                  <motion.button
+                    type="button"
+                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                    className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold text-lg md:text-xl rounded-lg transition"
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    −
+                  </motion.button>
+
+                  {/* NUMBER INPUT FIELD - Manual entry allowed */}
+                  <input
+                    type="number"
+                    value={quantity}
+                    onChange={(e) => {
+                      // Parse input value to integer, default to 1 if invalid
+                      const val = parseInt(e.target.value) || 1;
+                      // Limit quantity: minimum 1, maximum 10 - user cannot exceed limit
+                      setQuantity(Math.min(10, Math.max(1, val)));
+                    }}
+                    onBlur={(e) => {
+                      // Extra safeguard - if user somehow enters invalid value, reset to 1
+                      const val = parseInt(e.target.value) || 1;
+                      if (val > 10) setQuantity(10);
+                      if (val < 1) setQuantity(1);
+                    }}
+                    min="1"
+                    max="10"
+                    className="flex-grow text-center px-3 py-2 md:py-3 bg-white text-black font-bold text-lg md:text-xl border-0 focus:outline-none rounded"
+                    placeholder="1-10"
+                  />
+
+                  {/* PLUS BUTTON - Increase quantity */}
+                  <motion.button
+                    type="button"
+                    onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                    className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold text-lg md:text-xl rounded-lg transition"
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    +
+                  </motion.button>
+                </div>
+
+                {/* QUANTITY LIMIT REMINDER - Shows quantity constraints */}
+                <p className="text-xs text-gray-600">Maximum 10 items per order</p>
               </div>
 
               {/* ACTION BUTTONS - Add to Cart and Buy Now */}

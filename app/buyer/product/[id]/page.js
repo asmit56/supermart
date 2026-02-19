@@ -256,24 +256,59 @@ export default function ProductPage() {
             </div>
 
             {/* Quantity & Add to Cart */}
-            <div className="flex gap-4 mb-8">
-              <div className="flex items-center gap-3">
-                <label className={`font-semibold ${stock > 0 ? 'text-gray-700' : 'text-gray-400'}`}>
-                  Quantity:
-                </label>
+            <div className="flex flex-col gap-2 mb-8">
+              <label className={`font-semibold ${stock > 0 ? 'text-gray-700' : 'text-gray-400'}`}>
+                Quantity:
+              </label>
+              {/* QUANTITY CONTROLS - Mobile Optimized with +/- buttons and input field */}
+              <div className={`flex items-center gap-2 rounded-lg p-2 border-2 ${stock > 0 ? 'border-gray-300 bg-gray-50' : 'border-gray-300 bg-gray-200'} focus-within:border-blue-600`}>
+                {/* MINUS BUTTON - Decrease quantity */}
+                <motion.button
+                  type="button"
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  disabled={stock === 0}
+                  className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-red-500 hover:bg-red-600 text-white font-bold text-lg md:text-xl rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  −
+                </motion.button>
+
+                {/* NUMBER INPUT FIELD - Manual entry allowed */}
                 <input
                   type="number"
                   value={quantity}
                   onChange={(e) => {
                     const val = parseInt(e.target.value) || 1;
-                    setQuantity(Math.min(stock, Math.max(1, val)));
+                    // Limit quantity: minimum 1, maximum 10
+                    setQuantity(Math.min(10, Math.max(1, val)));
+                  }}
+                  onBlur={(e) => {
+                    // Extra safeguard - if user somehow enters invalid value, reset properly
+                    const val = parseInt(e.target.value) || 1;
+                    if (val > 10) setQuantity(10);
+                    if (val < 1) setQuantity(1);
                   }}
                   min="1"
-                  max={stock}
+                  max="10"
                   disabled={stock === 0}
-                  className="w-24 px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 bg-white text-black font-bold text-lg text-center disabled:bg-gray-200 disabled:cursor-not-allowed"
+                  className="flex-grow text-center px-3 py-2 md:py-3 bg-white text-black font-bold text-lg md:text-xl border-0 focus:outline-none rounded disabled:bg-gray-200 disabled:cursor-not-allowed"
+                  placeholder="1-10"
                 />
+
+                {/* PLUS BUTTON - Increase quantity */}
+                <motion.button
+                  type="button"
+                  onClick={() => setQuantity(Math.min(10, quantity + 1))}
+                  disabled={stock === 0}
+                  className="w-10 h-10 md:w-12 md:h-12 flex items-center justify-center bg-green-500 hover:bg-green-600 text-white font-bold text-lg md:text-xl rounded-lg transition disabled:bg-gray-400 disabled:cursor-not-allowed"
+                  whileTap={{ scale: 0.95 }}
+                >
+                  +
+                </motion.button>
               </div>
+
+              {/* QUANTITY LIMIT REMINDER */}
+              <p className="text-xs text-gray-600">Maximum 10 items per order</p>
             </div>
 
             {/* Action Buttons */}
