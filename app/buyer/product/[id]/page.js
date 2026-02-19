@@ -266,10 +266,10 @@ export default function ProductPage() {
                   value={quantity}
                   onChange={(e) => {
                     const val = parseInt(e.target.value) || 1;
-                    setQuantity(Math.min(10, Math.max(1, val)));
+                    setQuantity(Math.min(stock, Math.max(1, val)));
                   }}
                   min="1"
-                  max="10"
+                  max={stock}
                   disabled={stock === 0}
                   className="w-24 px-4 py-3 border-2 border-gray-300 rounded-lg focus:outline-none focus:border-blue-600 bg-white text-black font-bold text-lg text-center disabled:bg-gray-200 disabled:cursor-not-allowed"
                 />

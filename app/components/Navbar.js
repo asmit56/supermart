@@ -151,6 +151,22 @@ export default function Navbar() {
               </>
             ) : (
               <>
+                {session.user.role === 'seller' && (
+                  <Link href="/seller/dashboard" className="block py-2 hover:bg-blue-700 px-4 rounded">
+                    Dashboard
+                  </Link>
+                )}
+                {session.user.role === 'buyer' && (
+                  <Link href="/buyer/dashboard" className="block py-2 hover:bg-blue-700 px-4 rounded">
+                    🛒 My Cart
+                  </Link>
+                )}
+                <button
+                  onClick={handleRoleSwitch}
+                  className="w-full text-left py-2 hover:bg-blue-700 px-4 rounded text-sm"
+                >
+                  Switch to {session.user.role === 'seller' ? 'Buyer' : 'Seller'}
+                </button>
                 <button
                   onClick={handleLogout}
                   className="w-full text-left py-2 hover:bg-blue-700 px-4 rounded"
