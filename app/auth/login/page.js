@@ -178,7 +178,7 @@ export default function LoginPage() {
           </div>
         </div>
 
-        {/* Demo Credentials */}
+        {/* Demo Credentials
         <motion.div
           className="mt-6 bg-white bg-opacity-90 rounded-lg p-4 text-sm text-gray-700"
           initial={{ opacity: 0 }}
@@ -188,7 +188,7 @@ export default function LoginPage() {
           <p className="font-bold mb-2">Demo Credentials:</p>
           <p>📧 buyer@demo.com / demo123</p>
           <p>🏪 seller@demo.com / demo123</p>
-        </motion.div>
+        </motion.div> */}
       </motion.div>
     </div>
   );

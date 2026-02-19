@@ -10,10 +10,19 @@ export default function Navbar() {
   const { data: session } = useSession();
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
 
   const handleLogout = async () => {
     await signOut({ redirect: false });
     router.push('/');
+  };
+
+  const handleSearch = (e) => {
+    const query = e.target.value;
+    setSearchQuery(query);
+    if (query.trim()) {
+      router.push(`/buyer/search?q=${query}`);
+    }
   };
 
   const handleRoleSwitch = () => {
@@ -50,9 +59,7 @@ export default function Navbar() {
                 type="text"
                 placeholder="Search products..."
                 className="w-full px-4 py-2 rounded-lg text-black focus:outline-none bg-white placeholder-gray-800 font-medium"
-                onChange={(e) => {
-                  router.push(`/buyer/search?q=${e.target.value}`);
-                }}
+                onChange={handleSearch}
               />
             </div>
           )}
@@ -83,7 +90,7 @@ export default function Navbar() {
 
                 <button
                   onClick={handleRoleSwitch}
-                  className="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded transition text-sm"
+                  className="bg-white bg-opacity-20 hover:bg-opacity-30 px-3 py-2 rounded transition text-sm text-blue-700"
                 >
                   Switch to {session.user.role === 'seller' ? 'Buyer' : 'Seller'}
                 </button>
@@ -121,6 +128,18 @@ export default function Navbar() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
           >
+            {/* Mobile Search Bar */}
+            {session?.user?.role === 'buyer' && (
+              <div className="px-4 py-3 border-b border-blue-500">
+                <input
+                  type="text"
+                  placeholder="Search products..."
+                  className="w-full px-4 py-2 rounded-lg text-black focus:outline-none bg-white placeholder-gray-800 font-medium"
+                  onChange={handleSearch}
+                />
+              </div>
+            )}
+
             {!session ? (
               <>
                 <Link href="/auth/login" className="block py-2 hover:bg-blue-700 px-4 rounded">
