@@ -238,7 +238,7 @@ export default function Home() {
             <ul className="space-y-2 text-gray-400">
               <li>
                 <Link href="/auth/register" className="hover:text-white transition">
-                  Start Selling
+                  Start Selling 
                 </Link>
               </li>
               <li>
